@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_64_0</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_64_0\lib32-msvc-14.1</LibraryPath>

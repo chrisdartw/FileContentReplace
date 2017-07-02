@@ -1,8 +1,8 @@
-// stdafx.cpp : �ȥ]�t�з� Include �ɪ���l�{����
-// FileContentReplace.pch �|��������sĶ���Y��
-// stdafx.obj �|�]�t����sĶ������T
+﻿// stdafx.cpp : 僅包含標準 Include 檔的原始程式檔
+// FileContentReplace.pch 會成為先行編譯標頭檔
+// stdafx.obj 會包含先行編譯類型資訊
 
 #include "stdafx.h"
 
-// TODO:  �b STDAFX.H ���Ѧұz�ݭn�������L���Y�A
-// �Ӥ��n�b�o���ɮפ��Ѧ�
+// TODO:  在 STDAFX.H 中參考您需要的任何其他標頭，
+// 而不要在這個檔案中參考
