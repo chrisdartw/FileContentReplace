@@ -1,4 +1,4 @@
-// FileContentReplace.cpp : ©w¸q¥D±±¥xÀ³¥Îµ{¦¡ªº¶i¤JÂI¡C
+// FileContentReplace.cpp : å®šç¾©ä¸»æ§å°æ‡‰ç”¨ç¨‹å¼çš„é€²å…¥é»ã€‚
 //
 
 #include "stdafx.h"
@@ -99,7 +99,7 @@ int FuncCopy (bFS::path input, size_t size, bFS::path output, bool verbose = fal
     std::cout << boost::format ("Processing for %1% ... ") % output.filename().string();
   }
 
-  // Phase 1 : Read me file.
+  // Phase 1 : Read input file.
   std::ifstream File_input (input.string(), std::ios::binary);
   std::vector<char> DataBuffer ( (std::istreambuf_iterator<char> (File_input)), std::istreambuf_iterator<char>());
   File_input.close();
