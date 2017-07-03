@@ -21,7 +21,7 @@ int FuncBIOS (bFS::path me, bFS::path bios, bFS::path output, bool verbose = fal
     std::cout << "ERROR: File does not exist (me or bios)" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
-  if (bFS::file_size (me) >= bFS::file_size (bios)) {
+  if (bFS::file_size (me) <= bFS::file_size (bios)) {
     std::cout << "ERROR: File size is not legal (me <= bios)" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
