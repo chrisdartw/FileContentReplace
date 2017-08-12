@@ -13,9 +13,11 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/convert.hpp>
+#include <boost/convert/stream.hpp>
 
 namespace bFS = boost::filesystem;
-int FuncBIOS (bFS::path me, bFS::path bios, bFS::path output, bool verbose = false) throw()
+int FuncCopy (bFS::path me, bFS::path bios, bFS::path output, int position = -1, bool verbose = false) throw()
 {
   if ( (false == bFS::exists (me)) || (false == bFS::exists (bios))) {
     std::cout << "ERROR: File does not exist (me or bios)" << std::endl << std::endl;
@@ -23,6 +25,10 @@ int FuncBIOS (bFS::path me, bFS::path bios, bFS::path output, bool verbose = fal
   }
   if (bFS::file_size (me) <= bFS::file_size (bios)) {
     std::cout << "ERROR: File size is not legal (me <= bios)" << std::endl << std::endl;
+    return EXIT_FAILURE;
+  }
+  if ( (-1 != position) && (bFS::file_size (me) < (position + bFS::file_size (bios)))) {
+    std::cout << "ERROR: position is not legal (me < position + bios)" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
   if (true == verbose) {
@@ -40,6 +46,7 @@ int FuncBIOS (bFS::path me, bFS::path bios, bFS::path output, bool verbose = fal
 
   // Phase 2 : Read bios file in the correct position.
   auto Offset_Iter = std::next (DataBuffer.begin(), size_t (bFS::file_size (me) - bFS::file_size (bios)));
+  Offset_Iter = (-1 != position ? std::next (DataBuffer.begin(), position) : Offset_Iter);
   std::ifstream File_bios (bios.string(), std::ios::binary);
   std::copy (std::istreambuf_iterator<char> (File_bios), std::istreambuf_iterator<char>(), Offset_Iter);
   File_bios.close();
@@ -62,7 +69,7 @@ int FuncBIOS (bFS::path me, bFS::path bios, bFS::path output, bool verbose = fal
   return EXIT_SUCCESS;
 }
 
-int FuncCopy (bFS::path input, size_t size, bFS::path output, bool verbose = false) throw()
+int FuncSwap (bFS::path input, size_t size, bFS::path output, bool verbose = false) throw()
 {
   if (false == bFS::exists (input)) {
     std::cout << "ERROR: File does not exist (input)" << std::endl << std::endl;
@@ -145,8 +152,8 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
 {
   enum FunctionIdx {
     FunctionHelp = 0,
-    FunctionBIOS,
     FunctionCopy,
+    FunctionSwap,
     FunctionMax,
   };
 
@@ -160,12 +167,13 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
   ("help,h", "Print help messages")
   ("verbose,v", "Print verbose messages");
 
-  OptionGroup[FunctionBIOS].get<0>().add_options()
-  ("me,m", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] Whole ROM image included ME & BIOS")
-  ("bios,b", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] BIOS only, For replacement purposes")
-  ("output,o", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] output file");
-
   OptionGroup[FunctionCopy].get<0>().add_options()
+  ("me,m", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] Whole ROM image included ME & BIOS")
+  ("bios,b", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] BIOS file only, For replacement purposes")
+  ("output,o", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] output file")
+  ("position,p", bPO::value<std::string>()->value_name ("position")->required(), "[Required] Paste position, -1 for tail");
+
+  OptionGroup[FunctionSwap].get<0>().add_options()
   ("input,i", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] input file")
   ("size,s", bPO::value<size_t>()->value_name ("size")->required(), "[Required] replace size")
   ("output,o", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] output file");
@@ -205,18 +213,27 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
     std::cout << OptionsDescAll << std::endl;
   } else if (0 != OptionGroup[FunctionHelp].get<1>().count ("help")) {
     std::cout << OptionsDescAll << std::endl;
-  } else if (0 == OptionGroup[FunctionBIOS].get<2>().size()) {
-    FuncBIOS (
-      OptionGroup[FunctionBIOS].get<1>() ["me"].as<std::string>(),
-      OptionGroup[FunctionBIOS].get<1>() ["bios"].as<std::string>(),
-      OptionGroup[FunctionBIOS].get<1>() ["output"].as<std::string>(),
+  } else if (0 == OptionGroup[FunctionCopy].get<2>().size()) {
+    auto StrPos = OptionGroup[FunctionCopy].get<1>() ["position"].as<std::string>();
+    int IntPos = -1;
+    if (StrPos.compare (0, 2, "0x") == 0) {
+      StrPos = StrPos.substr (2, std::string::npos);
+      IntPos = boost::convert<int> (StrPos, boost::cnv::cstream() (std::hex) (std::skipws)).value_or (-1);
+    } else {
+      IntPos = boost::convert<int> (StrPos, boost::cnv::cstream() (std::dec) (std::skipws)).value_or (-1);
+    }
+    FuncCopy (
+      OptionGroup[FunctionCopy].get<1>() ["me"].as<std::string>(),
+      OptionGroup[FunctionCopy].get<1>() ["bios"].as<std::string>(),
+      OptionGroup[FunctionCopy].get<1>() ["output"].as<std::string>(),
+      IntPos,
       (0 != OptionGroup[FunctionHelp].get<1>().count ("verbose"))
     );
-  } else if (0 == OptionGroup[FunctionCopy].get<2>().size()) {
-    FuncCopy (
-      OptionGroup[FunctionCopy].get<1>() ["input"].as<std::string>(),
-      OptionGroup[FunctionCopy].get<1>() ["size"].as<size_t>(),
-      OptionGroup[FunctionCopy].get<1>() ["output"].as<std::string>(),
+  } else if (0 == OptionGroup[FunctionSwap].get<2>().size()) {
+    FuncSwap (
+      OptionGroup[FunctionSwap].get<1>() ["input"].as<std::string>(),
+      OptionGroup[FunctionSwap].get<1>() ["size"].as<size_t>(),
+      OptionGroup[FunctionSwap].get<1>() ["output"].as<std::string>(),
       (0 != OptionGroup[FunctionHelp].get<1>().count ("verbose"))
     );
   }
