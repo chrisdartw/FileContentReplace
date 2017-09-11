@@ -146,6 +146,12 @@ int FuncSwap (bFS::path input, size_t size, bFS::path output, bool verbose = fal
 
 namespace bPO = boost::program_options;
 typedef boost::tuple<bPO::options_description, bPO::variables_map, std::string> MyProgramOptions;
+enum MyProgramOptionsTupleIdx {
+  MPO_Desc = 0,
+  MPO_Value,
+  MPO_Error,
+  MPO_Max,
+};
 typedef std::vector<MyProgramOptions> myOptionContainer;
 
 int _tmain (int argc, _TCHAR *argv[]) throw()
@@ -163,17 +169,17 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
   OptionGroup.push_back ({ bPO::options_description ("BIOS Replace") });
   OptionGroup.push_back ({ bPO::options_description ("Top Copy") });
 
-  OptionGroup[FunctionHelp].get<0>().add_options()
+  OptionGroup[FunctionHelp].get<MPO_Desc>().add_options()
   ("help,h", "Print help messages")
   ("verbose,v", "Print verbose messages");
 
-  OptionGroup[FunctionCopy].get<0>().add_options()
+  OptionGroup[FunctionCopy].get<MPO_Desc>().add_options()
   ("me,m", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] Whole ROM image included ME & BIOS")
   ("bios,b", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] BIOS file only, For replacement purposes")
   ("output,o", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] output file")
   ("position,p", bPO::value<std::string>()->value_name ("position")->required(), "[Required] Paste position, -1 for tail");
 
-  OptionGroup[FunctionSwap].get<0>().add_options()
+  OptionGroup[FunctionSwap].get<MPO_Desc>().add_options()
   ("input,i", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] input file")
   ("size,s", bPO::value<size_t>()->value_name ("size")->required(), "[Required] replace size")
   ("output,o", bPO::value<std::string>()->value_name ("filename")->required(), "[Required] output file");
@@ -185,36 +191,36 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
       int style = bCLS::default_style | bCLS::case_insensitive | bCLS::allow_slash_for_short | bCLS::allow_long_disguise;
 #if 0
       // deny_unregistered
-      bPO::store (bPO::parse_command_line (argc, argv, item.get<0>(), style), item.get<1>());
+      bPO::store (bPO::parse_command_line (argc, argv, item.get<MPO_Desc>(), style), item.get<MPO_Value>());
 #else
       // allow_unregistered
-      bPO::store (bPO::wcommand_line_parser (argc, argv).options (item.get<0>()).allow_unregistered().style (style).run(), item.get<1>());
+      bPO::store (bPO::wcommand_line_parser (argc, argv).options (item.get<MPO_Desc>()).allow_unregistered().style (style).run(), item.get<MPO_Value>());
 #endif
-      bPO::notify (item.get<1>());
+      bPO::notify (item.get<MPO_Value>());
     } catch (bPO::validation_error e) {
-      item.get<2>() = std::string (e.what());
+      item.get<MPO_Error>() = std::string (e.what());
     } catch (bPO::error_with_option_name e) {
-      item.get<2>() = std::string (e.what());
+      item.get<MPO_Error>() = std::string (e.what());
     } catch (bPO::error e) {
-      item.get<2>() = std::string (e.what());
+      item.get<MPO_Error>() = std::string (e.what());
     }
   }
   size_t MatchCount = 0;
   for each (const auto & item in OptionGroup) {
-    MatchCount += (item.get<2>().size() == 0 ? 1 : 0);
+    MatchCount += (item.get<MPO_Error>().size() == 0 ? 1 : 0);
   }
 
   // Phase 3 : Functional classification.
   bPO::options_description OptionsDescAll ("Allowed options");
   for each (const auto & item in OptionGroup) {
-    OptionsDescAll.add (item.get<0>());
+    OptionsDescAll.add (item.get<MPO_Desc>());
   }
   if (2 != MatchCount) {
     std::cout << OptionsDescAll << std::endl;
-  } else if (0 != OptionGroup[FunctionHelp].get<1>().count ("help")) {
+  } else if (0 != OptionGroup[FunctionHelp].get<MPO_Value>().count ("help")) {
     std::cout << OptionsDescAll << std::endl;
-  } else if (0 == OptionGroup[FunctionCopy].get<2>().size()) {
-    auto StrPos = OptionGroup[FunctionCopy].get<1>() ["position"].as<std::string>();
+  } else if (0 == OptionGroup[FunctionCopy].get<MPO_Error>().size()) {
+    auto StrPos = OptionGroup[FunctionCopy].get<MPO_Value>() ["position"].as<std::string>();
     int IntPos = -1;
     if (StrPos.compare (0, 2, "0x") == 0) {
       StrPos = StrPos.substr (2, std::string::npos);
@@ -223,25 +229,25 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
       IntPos = boost::convert<int> (StrPos, boost::cnv::cstream() (std::dec) (std::skipws)).value_or (-1);
     }
     FuncCopy (
-      OptionGroup[FunctionCopy].get<1>() ["me"].as<std::string>(),
-      OptionGroup[FunctionCopy].get<1>() ["bios"].as<std::string>(),
-      OptionGroup[FunctionCopy].get<1>() ["output"].as<std::string>(),
+      OptionGroup[FunctionCopy].get<MPO_Value>() ["me"].as<std::string>(),
+      OptionGroup[FunctionCopy].get<MPO_Value>() ["bios"].as<std::string>(),
+      OptionGroup[FunctionCopy].get<MPO_Value>() ["output"].as<std::string>(),
       IntPos,
-      (0 != OptionGroup[FunctionHelp].get<1>().count ("verbose"))
+      (0 != OptionGroup[FunctionHelp].get<MPO_Value>().count ("verbose"))
     );
-  } else if (0 == OptionGroup[FunctionSwap].get<2>().size()) {
+  } else if (0 == OptionGroup[FunctionSwap].get<MPO_Error>().size()) {
     FuncSwap (
-      OptionGroup[FunctionSwap].get<1>() ["input"].as<std::string>(),
-      OptionGroup[FunctionSwap].get<1>() ["size"].as<size_t>(),
-      OptionGroup[FunctionSwap].get<1>() ["output"].as<std::string>(),
-      (0 != OptionGroup[FunctionHelp].get<1>().count ("verbose"))
+      OptionGroup[FunctionSwap].get<MPO_Value>() ["input"].as<std::string>(),
+      OptionGroup[FunctionSwap].get<MPO_Value>() ["size"].as<size_t>(),
+      OptionGroup[FunctionSwap].get<MPO_Value>() ["output"].as<std::string>(),
+      (0 != OptionGroup[FunctionHelp].get<MPO_Value>().count ("verbose"))
     );
   }
 
   // Phase 4 : Debugging information.
-  if (false && (0 != OptionGroup[FunctionHelp].get<1>().count ("verbose"))) {
+  if (false && (0 != OptionGroup[FunctionHelp].get<MPO_Value>().count ("verbose"))) {
     for each (const auto & item in OptionGroup) {
-      for each (const auto & it in item.get<1>()) {
+      for each (const auto & it in item.get<MPO_Value>()) {
         std::cout << it.first.c_str() << "=";
         auto &value = it.second.value();
         if (auto v = boost::any_cast<size_t> (&value)) {
