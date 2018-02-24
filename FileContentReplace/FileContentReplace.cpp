@@ -1,4 +1,5 @@
-﻿// FileContentReplace.cpp : 定義主控台應用程式的進入點。
+﻿//
+// FileContentReplace.cpp : 定義主控台應用程式的進入點。
 //
 
 #include "stdafx.h"
@@ -165,9 +166,9 @@ int _tmain (int argc, _TCHAR *argv[]) throw()
 
   // Phase 1 : Set program options.
   myOptionContainer OptionGroup;
-  OptionGroup.push_back ({ bPO::options_description ("Help") });
-  OptionGroup.push_back ({ bPO::options_description ("BIOS Replace") });
-  OptionGroup.push_back ({ bPO::options_description ("Top Copy") });
+  OptionGroup.push_back (MyProgramOptions{ bPO::options_description ("Help") });
+  OptionGroup.push_back (MyProgramOptions{ bPO::options_description ("BIOS Replace") });
+  OptionGroup.push_back (MyProgramOptions{ bPO::options_description ("Top Copy") });
 
   OptionGroup[FunctionHelp].get<MPO_Desc>().add_options()
   ("help,h", "Print help messages")
