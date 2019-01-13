@@ -96,7 +96,7 @@ int FuncSwap (bFS::path input, size_t size, bFS::path output, bool verbose = fal
     std::cout << "ERROR: The size must be one of 64, 128, 256, 512, 1024" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
-  if ( (2 * size * KiloBytes) >= bFS::file_size (input)) {
+  if ( ((uint64_t)2 * size * KiloBytes) >= bFS::file_size (input)) {
     std::cout << boost::format ("ERROR: File size is not legal (%1%KB >= input)") % (2 * size) << std::endl << std::endl;
     return EXIT_FAILURE;
   }
@@ -113,8 +113,8 @@ int FuncSwap (bFS::path input, size_t size, bFS::path output, bool verbose = fal
   File_input.close();
 
   // Phase 2 : File content check.
-  auto Start_Iter = std::next (DataBuffer.begin(), size_t (bFS::file_size (input) - 2 * size * KiloBytes));
-  auto Stop_Iter = std::next (DataBuffer.begin(), size_t (bFS::file_size (input) - 1 * size * KiloBytes));
+  auto Start_Iter = std::next (DataBuffer.begin(), size_t (bFS::file_size (input) - (uint64_t)2 * size * KiloBytes));
+  auto Stop_Iter = std::next (DataBuffer.begin(), size_t (bFS::file_size (input) - (uint64_t)1 * size * KiloBytes));
   if (1 != std::set<char> (Start_Iter, Stop_Iter).size()) {
     if (true == verbose) {
       std::cout << "Input file content check fail." << std::endl;
