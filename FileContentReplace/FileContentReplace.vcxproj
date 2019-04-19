@@ -23,7 +23,7 @@
     <ProjectGuid>{759F9D46-DFC3-4557-9E99-3F1C4CC4CEB2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FileContentReplace</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -157,20 +157,20 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_69_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_69_0\lib32-msvc-14.1</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib32-msvc-14.1</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_69_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_69_0\lib64-msvc-14.1</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib64-msvc-14.1</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_69_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_69_0\lib32-msvc-14.1</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib32-msvc-14.1</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_69_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_69_0\lib64-msvc-14.1</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib64-msvc-14.1</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
