@@ -8,20 +8,20 @@
 
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib32-msvc-14.2</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_72_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_72_0\lib32-msvc-14.2</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib64-msvc-14.2</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_72_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_72_0\lib64-msvc-14.2</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib32-msvc-14.2</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_72_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_72_0\lib32-msvc-14.2</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_70_0</IncludePath>
-    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_70_0\lib64-msvc-14.2</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProgramW6432)\boost\boost_1_72_0</IncludePath>
+    <LibraryPath>$(LibraryPath);$(ProgramW6432)\boost\boost_1_72_0\lib64-msvc-14.2</LibraryPath>
   </PropertyGroup>
 
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -46,5 +46,5 @@
   </ItemDefinitionGroup>
 </Project>
 
-https://downloads.sourceforge.net/boost/boost-binaries/1.68.0/boost_1_70_0-bin-msvc-all-32-64.7z
+https://downloads.sourceforge.net/boost/boost-binaries/1.68.0/boost_1_72_0-bin-msvc-all-32-64.7z
 

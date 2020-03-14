@@ -20,7 +20,7 @@
 namespace bFS = boost::filesystem;
 int FuncCopy (bFS::path me, bFS::path bios, bFS::path output, int position = -1, bool verbose = false) throw()
 {
-  if ( (false == bFS::exists (me)) || (false == bFS::exists (bios))) {
+  if ((false == bFS::exists (me)) || (false == bFS::exists (bios))) {
     std::cout << "ERROR: File does not exist (me or bios)" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
@@ -28,7 +28,7 @@ int FuncCopy (bFS::path me, bFS::path bios, bFS::path output, int position = -1,
     std::cout << "ERROR: File size is not legal (me <= bios)" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
-  if ( (-1 != position) && (bFS::file_size (me) < (position + bFS::file_size (bios)))) {
+  if ((-1 != position) && (bFS::file_size (me) < (position + bFS::file_size (bios)))) {
     std::cout << "ERROR: position is not legal (me < position + bios)" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
@@ -42,7 +42,7 @@ int FuncCopy (bFS::path me, bFS::path bios, bFS::path output, int position = -1,
 
   // Phase 1 : Read me file.
   std::ifstream File_me (me.string(), std::ios::binary);
-  std::vector<char> DataBuffer ( (std::istreambuf_iterator<char> (File_me)), std::istreambuf_iterator<char>());
+  std::vector<char> DataBuffer ((std::istreambuf_iterator<char> (File_me)), std::istreambuf_iterator<char>());
   File_me.close();
 
   // Phase 2 : Read bios file in the correct position.
@@ -96,7 +96,7 @@ int FuncSwap (bFS::path input, size_t size, bFS::path output, bool verbose = fal
     std::cout << "ERROR: The size must be one of 64, 128, 256, 512, 1024" << std::endl << std::endl;
     return EXIT_FAILURE;
   }
-  if ( ((uint64_t)2 * size * KiloBytes) >= bFS::file_size (input)) {
+  if (((uint64_t)2 * size * KiloBytes) >= bFS::file_size (input)) {
     std::cout << boost::format ("ERROR: File size is not legal (%1%KB >= input)") % (2 * size) << std::endl << std::endl;
     return EXIT_FAILURE;
   }
@@ -109,7 +109,7 @@ int FuncSwap (bFS::path input, size_t size, bFS::path output, bool verbose = fal
 
   // Phase 1 : Read input file.
   std::ifstream File_input (input.string(), std::ios::binary);
-  std::vector<char> DataBuffer ( (std::istreambuf_iterator<char> (File_input)), std::istreambuf_iterator<char>());
+  std::vector<char> DataBuffer ((std::istreambuf_iterator<char> (File_input)), std::istreambuf_iterator<char>());
   File_input.close();
 
   // Phase 2 : File content check.

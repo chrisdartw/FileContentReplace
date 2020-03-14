@@ -15,5 +15,7 @@ if exist ".\%prj%\x64"     rd /s /q ".\%prj%\x64"
 
 if exist ".\.vs\%prj%\v15\ipch"             rd /s /q ".\.vs\%prj%\v15\ipch"
 if exist ".\.vs\%prj%\v15\Browse.VC.db"     del      ".\.vs\%prj%\v15\Browse.VC.db"
+if exist ".\.vs\%prj%\v16\ipch"             rd /s /q ".\.vs\%prj%\v16\ipch"
+if exist ".\.vs\%prj%\v16\Browse.VC.db"     del      ".\.vs\%prj%\v16\Browse.VC.db"
 
 pause
